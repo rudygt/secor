@@ -36,7 +36,7 @@ import java.util.Stack;
  *
  * @author Pawel Garbacki (pawel@pinterest.com)
  */
-public class PartitionFinalizer {
+public class PartitionFinalizer implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(PartitionFinalizer.class);
 
     private final SecorConfig mConfig;
@@ -46,6 +46,7 @@ public class PartitionFinalizer {
     private final QuboleClient mQuboleClient;
     private final String mFileExtension;
     private final int mLookbackPeriods;
+    private final int mFinalizerDelaySeconds;
 
     public PartitionFinalizer(SecorConfig config) throws Exception {
         mConfig = config;
@@ -63,6 +64,7 @@ public class PartitionFinalizer {
             mFileExtension = "";
         }
         mLookbackPeriods = config.getFinalizerLookbackPeriods();
+        mFinalizerDelaySeconds = config.getFinalizerDelaySeconds() * 3;
         LOG.info("Lookback periods: " + mLookbackPeriods);
     }
 
@@ -210,4 +212,18 @@ public class PartitionFinalizer {
             }
         }
     }
+
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                Thread.sleep(mFinalizerDelaySeconds * 1000L);
+                LOG.info("Partition finalizer start");
+                finalizePartitions();				
+            } catch(Throwable t) {
+                LOG.error("Partition finalizer failed", t);
+            }						
+        }
+    }
+
 }
