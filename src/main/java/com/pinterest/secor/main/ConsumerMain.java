@@ -19,6 +19,7 @@ package com.pinterest.secor.main;
 import com.pinterest.secor.common.OstrichAdminService;
 import com.pinterest.secor.common.SecorConfig;
 import com.pinterest.secor.consumer.Consumer;
+import com.pinterest.secor.parser.PartitionFinalizer;
 import com.pinterest.secor.tools.LogFileDeleter;
 import com.pinterest.secor.util.FileUtil;
 import com.pinterest.secor.util.RateLimitUtil;
@@ -73,7 +74,13 @@ public class ConsumerMain {
                 consumer.setUncaughtExceptionHandler(handler);
                 consumers.add(consumer);
                 consumer.start();
-            }
+            }            
+            
+            LOG.info("starting partition finalizer");
+            PartitionFinalizer partitionFinalizer = new PartitionFinalizer(config);
+            Thread finalizerThread = new Thread(partitionFinalizer);
+            finalizerThread.start();
+            
             for (Consumer consumer : consumers) {
                 consumer.join();
             }
