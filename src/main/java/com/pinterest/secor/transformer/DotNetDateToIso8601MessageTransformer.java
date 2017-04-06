@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pinterest.secor.common.SecorConfig;
 import com.pinterest.secor.message.Message;
 
 public class DotNetDateToIso8601MessageTransformer implements MessageTransformer {
@@ -16,7 +17,15 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
     private final Pattern mTsPattern;
     private final SimpleDateFormat mIso8601Format;
 
-    public DotNetDateToIso8601MessageTransformer() {
+    protected SecorConfig mConfig;
+    
+    /**
+     * Constructor
+     * 
+     * @param config
+     */        
+    public DotNetDateToIso8601MessageTransformer(SecorConfig config) {
+        mConfig = config;
         mTsPattern = Pattern.compile("\\\\/Date\\((d+)\\)\\\\/", Pattern.UNIX_LINES);
         mIso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
         TimeZone tz = TimeZone.getTimeZone("UTC");
