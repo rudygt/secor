@@ -76,10 +76,10 @@ public class ConsumerMain {
                 consumer.start();
             }            
             
-            LOG.info("starting partition finalizer");
+            /*LOG.info("starting partition finalizer");
             PartitionFinalizer partitionFinalizer = new PartitionFinalizer(config);
             Thread finalizerThread = new Thread(partitionFinalizer);
-            finalizerThread.start();
+            finalizerThread.start();*/
             
             for (Consumer consumer : consumers) {
                 consumer.join();
