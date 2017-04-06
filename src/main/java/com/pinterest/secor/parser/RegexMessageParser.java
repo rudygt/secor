@@ -49,6 +49,7 @@ public class RegexMessageParser extends TimestampedMessageParser {
         if (m.find()) {
             String tsValue = m.group(1);
             if (tsValue != null) {
+                LOG.error("Rudy " + m.group(0) + " - " + m.group(1));
                 return toMillis(Long.parseLong(tsValue));
             }
         }
