@@ -26,7 +26,7 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
      */        
     public DotNetDateToIso8601MessageTransformer(SecorConfig config) {
         mConfig = config;
-        mTsPattern = Pattern.compile("\\\\/Date\\((d+)\\)\\\\/", Pattern.UNIX_LINES);
+        mTsPattern = Pattern.compile("\\\\/Date\\((\\d+)\\)\\\\/", Pattern.UNIX_LINES);
         mIso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
         TimeZone tz = TimeZone.getTimeZone("UTC");
         mIso8601Format.setTimeZone(tz);
