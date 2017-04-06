@@ -57,7 +57,7 @@ public class Iso8601MessageParser extends MessageParser {
                 LOG.warn("Missing field value. Using default partition = {}", defaultDate);
             } else {
                 try {
-                    Date dateFormat = DatatypeConverter.parseDateTime(fieldValue.toString()).getTime();
+                    Date dateFormat = DatatypeConverter.parseDateTime(fieldValue.toString()).getTime();                    
                     result[0] = "dt=" + outputFormatter.format(dateFormat);
                 } catch (Exception e) {
                     LOG.warn("Impossible to convert date = {} as ISO-8601. Using date default = {}",
