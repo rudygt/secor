@@ -56,10 +56,7 @@ public class Message {
         if (mKafkaKey == null) {
             mKafkaKey = EMPTY_BYTES;
         }
-        mPayload = payload;
-        if (mPayload == null) {
-            mPayload = EMPTY_BYTES;
-        }
+        setPayload(payload);
     }
 
     public String getTopic() {
@@ -80,6 +77,13 @@ public class Message {
 
     public byte[] getPayload() {
         return mPayload;
+    }
+    
+    public void setPayload(byte[] payload) {        
+        mPayload=payload;
+        if (mPayload == null) {
+            mPayload = EMPTY_BYTES;
+        }
     }
 
     public void write(OutputStream output) throws IOException {
