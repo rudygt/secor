@@ -27,7 +27,7 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
     public DotNetDateToIso8601MessageTransformer(SecorConfig config) {
         mConfig = config;
         mTsPattern = Pattern.compile("\\\\/Date\\((\\d+)\\)\\\\/", Pattern.UNIX_LINES);
-        mIso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        mIso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
         TimeZone tz = TimeZone.getTimeZone("UTC");
         mIso8601Format.setTimeZone(tz);
     }
@@ -36,15 +36,12 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
     public Message transform(Message message) {
 
         String line = new String(message.getPayload());
-
-        LOG.error("RUDY BEFORE" + line);
         
         try {
-            line = replaceDotNetDates(line);            
-            LOG.error("RUDY AFTER" + line);
+            line = replaceDotNetDates(line);                        
             message.setPayload(line.getBytes("UTF-8"));
         } catch (Throwable e) {
-            LOG.warn("RUDY failed to transform message {}", line);
+            LOG.warn("failed to transform message {}", line);
         }
 
         return message;
@@ -55,8 +52,7 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
 
         Matcher matcher = mTsPattern.matcher(message);
 
-        while (matcher.find()) {
-            LOG.error("RUDY MATCH");
+        while (matcher.find()) {            
             matcher.appendReplacement(result, convertDotNetDateToIso8601(Long.parseLong(matcher.group(1))));
         }
 
