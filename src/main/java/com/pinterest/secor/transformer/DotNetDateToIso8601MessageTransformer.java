@@ -37,11 +37,13 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
 
         String line = new String(message.getPayload());
 
+        LOG.error("RUDY " + line);
+        
         try {
             line = replaceDotNetDates(line);
             message.setPayload(line.getBytes("UTF-8"));
         } catch (Throwable e) {
-            LOG.warn("failed to transform message {}", line);
+            LOG.warn("RUDY failed to transform message {}", line);
         }
 
         return message;
@@ -53,6 +55,7 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
         Matcher matcher = mTsPattern.matcher(message);
 
         while (matcher.find()) {
+            LOG.error("RUDY MATCH");
             matcher.appendReplacement(result, convertDotNetDateToIso8601(Long.parseLong(matcher.group(1))));
         }
 
