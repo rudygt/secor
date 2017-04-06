@@ -37,10 +37,11 @@ public class DotNetDateToIso8601MessageTransformer implements MessageTransformer
 
         String line = new String(message.getPayload());
 
-        LOG.error("RUDY " + line);
+        LOG.error("RUDY BEFORE" + line);
         
         try {
-            line = replaceDotNetDates(line);
+            line = replaceDotNetDates(line);            
+            LOG.error("RUDY AFTER" + line);
             message.setPayload(line.getBytes("UTF-8"));
         } catch (Throwable e) {
             LOG.warn("RUDY failed to transform message {}", line);
