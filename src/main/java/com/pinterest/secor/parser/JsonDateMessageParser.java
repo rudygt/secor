@@ -1,5 +1,7 @@
 package com.pinterest.secor.parser;
 
+import java.util.Date;
+
 import javax.xml.bind.DatatypeConverter;
 
 import com.pinterest.secor.common.SecorConfig;
@@ -27,7 +29,7 @@ public class JsonDateMessageParser extends TimestampedMessageParser {
         } else if (m_timestampRequired) {
             throw new RuntimeException("Missing timestamp field for message: " + message);
         }
-        return 0;
+        return toMillis(new Date().getTime());
     }
 
 }
